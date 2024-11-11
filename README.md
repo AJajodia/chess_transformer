@@ -1,6 +1,6 @@
 # Neural Networks for Chess
 
-Research Question: How do neural networks fit to chess data?
+Research Question: How do Vision Transformers fit to chess data?
 
 ## Code
 
