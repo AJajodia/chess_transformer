@@ -2,9 +2,3 @@
 
 Research Question: How do Vision Transformers fit to chess data?
 
-## Code
-
-
-
-## Interpretability
-
