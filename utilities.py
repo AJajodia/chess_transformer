@@ -2788,6 +2788,7 @@ class Embedding(torch.nn.Module):
 
 
     def forward(self, indices: torch.Tensor) -> torch.Tensor:
+        
         ensemble_shape = self.embedding.shape[:-2]
         embedding_dim = self.embedding.shape[-1]
 
@@ -2797,6 +2798,7 @@ class Embedding(torch.nn.Module):
         indices = indices[..., None].expand(
             indices.shape + (embedding_dim,)
         )
+        
 
         embedding = self.embedding.gather(
             -2,
