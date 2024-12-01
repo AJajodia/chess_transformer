@@ -8,9 +8,9 @@ import datasets
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 import tqdm
-import gymnasium as gym
-from IPython.display import Image
-import moviepy.editor as mpy
+
+
+
 import os
 from PIL import Image as PILImage
 import torch
@@ -830,64 +830,6 @@ def get_binary_cross_entropy(
         labels.broadcast_to(logits.shape[:-1]),
         reduction="none"
     ).mean(dim=-1)
-def run_episode(
-    config: dict,
-    env: gym.Env,
-    gif_name="test.gif",
-    policy: Optional[Callable[[int], int]]=None,
-) -> float:
-    """
-    Run an episode in a `gym.Env`
-    with discrete observation and action spaces,
-    following a policy.
-
-    Make a gif video of the gameplay.
-
-    Parameters
-    ----------
-    config : dict
-        Configuration dictionary. Required key-value pairs:
-        gif_fps : int
-            Frames per second in the gif.
-        video_directory : str
-            Path to a dictionary to save the gif to.
-    env : gym.Env
-        The environment to get an episode in.
-    gif_name : str, optional
-        The name of the gif video to save in the video directory.
-        Default: `"test.gif"`.
-    policy : Callable[[int], int], optional
-        The policy to get an episode with. Default: random policy.
-
-    Returns
-    -------
-    The discounted return of the episode.
-    """
-    if policy is None:
-        policy = lambda observation: env.action_space.sample()
-
-    episode_return = 0
-    frames = []
-    step_id = 0
-    observation, _ = env.reset()
-    os.makedirs(config["videos_directory"], exist_ok=True)
-    frames.append(env.render())
-    while True:
-        action = policy(observation)
-        observation, reward, _, terminated, _ = env.step(action)
-        episode_return += reward * config["discount"] ** step_id
-        frames.append(env.render())
-        if terminated:
-            break
-
-        step_id += 1
-
-    # https://stackoverflow.com/a/64796174
-    clip = mpy.ImageSequenceClip(frames, fps=config["gif_fps"])
-    gif_path = os.path.join(config["videos_directory"], "test.gif")
-    clip.write_gif(gif_path, fps=config["gif_fps"])
-
-    return episode_return
 
 import torch
 from collections.abc import Generator, Sequence, Iterable, Callable
